@@ -1,0 +1,1 @@
+# lossy-image-compression
