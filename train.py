@@ -95,7 +95,7 @@ save_checkpoint({
     'history' : history,
     'model_state' :model.state_dict(),
     'optimizer_state' : optimizer.state_dict(),
-},args.save_at'train_state_new%s.tar'%avg_score)
+},args.save_at+'train_state_new%s.tar'%avg_score)
 
 
 visualize(history)
