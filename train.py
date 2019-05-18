@@ -1,4 +1,4 @@
-from utils.training import train,validate,visualize
+from utils.training import *
 from model import *
 import torch.nn as nn
 import torch
@@ -7,14 +7,23 @@ from torch.utils.data.sampler import SubsetRandomSampler
 import numpy as np
 import random
 import time
+import warnings
+import sys
+import argparse
+parser = argparse.ArgumentParser()
 
-stop_epoch = 31
+
+warnings.filterwarnings('ignore')
+# Parameters for training
 batch_size = 1
 validation_split = 0.1
 random_seed= 42
-data_root_folder = '../dataset/'
+START_EPOCH = 1
 
-
+parser.add_argument('--dataset-path', nargs='?', default='../dataset/', help='Root directory of Images')
+parser.add_argument('--checkpoint-path', nargs='?', default=None, help='Use to resume training from last checkpoint')
+parser.add_argument('--stop-at',nargs='?',default=30,help='Epoch after you want to end training',type=int)
+args = parser.parse_args()
 
 model = Autoencoder().float()
 criterion = nn.SmoothL1Loss()
@@ -23,7 +32,22 @@ exp_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2
 if torch.cuda.is_available():
     model = model.cuda()
 
-ds = Dataset(path=data_root_folder)
+history = {
+    'train_losses':[],
+    'val_losses' :[],
+    'epoch_data' : []
+}
+
+if(args.checkpoint_path):
+    checkpoint = load_checkpoint(args.checkpoint_path)
+    model.load_state_dict(checkpoint['model_state'])
+    optimizer.load_state_dict(checkpoint['optimizer_state'])
+    history = checkpoint['history']
+    START_EPOCH = history['epoch_data'][-1]+1
+
+
+
+ds = Dataset(path=args.dataset_path)
 shuffle_dataset = True
 # Creating data indices for training and validation splits:
 dataset_size = len(ds)
@@ -41,13 +65,8 @@ validation_sampler = SubsetRandomSampler(val_indices)
 train_loader = torch.utils.data.DataLoader(ds,batch_size=batch_size,sampler=train_sampler)
 validation_loader = torch.utils.data.DataLoader(ds, batch_size=batch_size,sampler=validation_sampler)
 
-history = {
-    'train_losses':[],
-    'val_losses' :[],
-    'epoch_data' : []
-}
 parameters = {
-    'stop_epoch': stop_epoch,
+    'stop_epoch': args.stop_at,
     'exp_lr_scheduler' : exp_lr_scheduler,
     'train_indices' : train_indices,
     'val_indices' : val_indices,
@@ -55,9 +74,17 @@ parameters = {
 }
 
 
+print('GPU Support Found: %s'%torch.cuda.is_available())
+
 start = time.time()
 print('Begining training...')
 
-train(parameters,model=model,optimizer=optimizer,criterion=criterion,history=history,train_loader=train_loader,validation_loader=validation_loader)
+train(parameters,START_EPOCH,model=model,optimizer=optimizer,criterion=criterion,history=history,train_loader=train_loader,validation_loader=validation_loader)
+save_checkpoint({
+    'history' : history,
+    'model_state' :model.state_dict(),
+    'optimizer_state' : optimizer.state_dict(),
+},'out/train_state_new.tar')
 end = time.time()
-print(end-start)
+print('Finished training in %s seconds'%(end-start))
+visualize(history)

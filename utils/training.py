@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import torch
+from IPython import display
 
 
-def train(train_params,epoch=1,model=None,optimizer=None,criterion=None,history=None,train_loader=None,validation_loader=None):
+def train(train_params,epoch,model=None,optimizer=None,criterion=None,history=None,train_loader=None,validation_loader=None):
   while epoch<=train_params['stop_epoch']:
     total_loss = 0
     total_accuracy = 0
@@ -22,10 +23,11 @@ def train(train_params,epoch=1,model=None,optimizer=None,criterion=None,history=
       loss.backward()
       optimizer.step()
       # print statistics
-      total_loss+=loss
-#       print('Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.5f}'.format(epoch, (batch_idx + 1) * len(data), len(train_params['train_indices']),100*(batch_idx + 1)* len(data) / len(train_params['train_indices']), loss))
-    print('Train Loss: \t'+str(total_loss*train_params['batch_size']/len(train_params['train_indices'])))
+      total_loss+=loss.item()
+      # print('Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.5f}'.format(epoch, (batch_idx + 1) * len(data), len(train_params['train_indices']),100*(batch_idx + 1)* len(data) / len(train_params['train_indices']), loss))
+    print('Train Loss:\t%.6f'%(total_loss*train_params['batch_size']/len(train_params['train_indices'])))
     vloss, vaccuracy = validate(model,criterion,validation_loader)
+    print('Validation Loss:\t%.6f'%(vloss*train_params['batch_size']/len(train_params['val_indices'])))
     history['train_losses'].append((total_loss*train_params['batch_size'])/len(train_params['train_indices']))
     history['val_losses'].append((vloss*train_params['batch_size'])/len(train_params['val_indices']))
     history['epoch_data'].append(epoch)
@@ -59,3 +61,10 @@ def visualize(history):
   display.clear_output(wait=False)
   plt.legend()
   plt.show()
+
+def save_checkpoint(state,filename):
+    torch.save(state, filename)
+    print('Saved training state as %s'%filename)
+def load_checkpoint(path):
+    checkpoint = torch.load(path)
+    return checkpoint
