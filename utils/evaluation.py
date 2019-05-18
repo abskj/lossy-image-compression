@@ -1,7 +1,7 @@
 import pytorch_msssim
-import matploitlib.pyplot as plt
+import matplotlib.pyplot as plt
 import torchvision.transforms.functional as TF
-
+import torch
 
 
 def display_(x):
@@ -15,11 +15,14 @@ def display_(x):
         plt.show()
     else:
         plt.imshow(x)
-def evaluate(ds,idx, showImages = False):
+
+def evaluate(model,ds,idx, showImages = False):
     
     x = ds[idx]
     iimg = TF.to_pil_image(x)
-    x=x.unsqueeze(0).cuda()
+    x=x.unsqueeze(0)
+    if torch.cuda.is_available():
+        x = x.cuda()
     y = model(x)
     oimg = TF.to_pil_image(y.squeeze(0).cpu().detach())
     score = (pytorch_msssim.msssim(x, y).item())

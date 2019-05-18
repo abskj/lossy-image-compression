@@ -5,14 +5,18 @@ import torchvision.transforms.functional as TF
 import random
 from PIL import Image
 
-class someDataset(Dataset):
-    def __init__(self,path = '../input'):
+class imgDataset(Dataset):
+    def __init__(self,path = '../input',indices=None):
         self.files = []
         for r, d, f in os.walk(path):
             for file in f:
                 if '.png' in file:
                     self.files.append(os.path.join(r, file))
-        print('Found %s images...'%len(self.files))
+        if indices!=None:
+            files2 = self.files
+            self.files = []
+            for i in range(len(files2)):
+                self.files.append(files2[i])
 
     def __getitem__(self,idx):
         img = Image.open(self.files[idx])
@@ -20,7 +24,7 @@ class someDataset(Dataset):
     def __len__(self):
         return len(self.files)
     def transform(self,img):
-        if random.random()>0.5:
+        if random.random()>0.3:
             angle = random.randint(-60, 60)
             img = TF.rotate(img,angle)
         width, height = img.size

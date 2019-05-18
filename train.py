@@ -1,4 +1,5 @@
 from utils.training import *
+from utils.evaluation import evaluate
 from model import *
 import torch.nn as nn
 import torch
@@ -23,6 +24,7 @@ START_EPOCH = 1
 parser.add_argument('--dataset-path', nargs='?', default='../dataset/', help='Root directory of Images')
 parser.add_argument('--checkpoint-path', nargs='?', default=None, help='Use to resume training from last checkpoint')
 parser.add_argument('--stop-at',nargs='?',default=30,help='Epoch after you want to end training',type=int)
+parser.add_argument('--save-at', nargs='?', default='out/', help='Directory where training state will be saved')
 args = parser.parse_args()
 
 model = Autoencoder().float()
@@ -73,18 +75,27 @@ parameters = {
     'batch_size' : batch_size
 }
 
-
 print('GPU Support Found: %s'%torch.cuda.is_available())
 
 start = time.time()
 print('Begining training...')
 
 train(parameters,START_EPOCH,model=model,optimizer=optimizer,criterion=criterion,history=history,train_loader=train_loader,validation_loader=validation_loader)
+end = time.time()
+print('Finished training in %s seconds'%(end-start))
+
+vds = Dataset(path=args.dataset_path, indices=val_indices)
+total_score=0
+for i in range(0,len(vds)):
+    total_score += evaluate(model,vds,i)
+avg_score = '%.5f'%(total_score/len(vds))
+print('Average MSSSIM on validation is %s'%avg_score)
+
 save_checkpoint({
     'history' : history,
     'model_state' :model.state_dict(),
     'optimizer_state' : optimizer.state_dict(),
-},'out/train_state_new.tar')
-end = time.time()
-print('Finished training in %s seconds'%(end-start))
+},args.save_at'train_state_new%s.tar'%avg_score)
+
+
 visualize(history)
