@@ -2,6 +2,8 @@ import torch
 from torch.utils.data import Dataset
 import os
 import torchvision.transforms.functional as TF
+import random
+from PIL import Image
 
 class someDataset(Dataset):
     def __init__(self,path = '../input'):
@@ -10,6 +12,7 @@ class someDataset(Dataset):
             for file in f:
                 if '.png' in file:
                     self.files.append(os.path.join(r, file))
+        print('Found %s images...'%len(self.files))
 
     def __getitem__(self,idx):
         img = Image.open(self.files[idx])
