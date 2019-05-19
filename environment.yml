@@ -1,0 +1,44 @@
+name: imgcomp
+channels:
+  - pytorch
+  - soumith
+  - defaults
+dependencies:
+  - blas=1.0=mkl
+  - ca-certificates=2019.1.23=0
+  - certifi=2019.3.9=py37_0
+  - cffi=1.12.3=py37h7a1dbc1_0
+  - cudatoolkit=10.0.130=0
+  - freetype=2.9.1=ha9979f8_1
+  - icc_rt=2019.0.0=h0cc432a_1
+  - intel-openmp=2019.3=203
+  - jpeg=9b=hb83a4c4_2
+  - libpng=1.6.37=h2a8f88b_0
+  - libtiff=4.0.10=hb898794_2
+  - mkl=2019.3=203
+  - mkl_fft=1.0.12=py37h14836fe_0
+  - mkl_random=1.0.2=py37h343c172_0
+  - ninja=1.9.0=py37h74a9793_0
+  - numpy=1.16.3=py37h19fb1c0_0
+  - numpy-base=1.16.3=py37hc3f5095_0
+  - olefile=0.46=py37_0
+  - openssl=1.1.1b=he774522_1
+  - pillow=6.0.0=py37hdc69c19_0
+  - pip=19.1.1=py37_0
+  - pycparser=2.19=py37_0
+  - python=3.7.3=h8c8aaf0_1
+  - setuptools=41.0.1=py37_0
+  - six=1.12.0=py37_0
+  - sqlite=3.28.0=he774522_0
+  - tk=8.6.8=hfa6e2cd_0
+  - vc=14.1=h0510ff6_4
+  - vs2015_runtime=14.15.26706=h3a45250_4
+  - wheel=0.33.4=py37_0
+  - wincertstore=0.2=py37_0
+  - xz=5.2.4=h2fa13f4_4
+  - zlib=1.2.11=h62dcd97_3
+  - zstd=1.3.7=h508b16e_0
+  - pytorch=1.1.0=py3.7_cuda100_cudnn7_1
+  - torchvision=0.2.2=py_3
+prefix: C:\ProgramData\Anaconda3\envs\imgcomp
+
