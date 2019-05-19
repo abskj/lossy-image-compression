@@ -34,22 +34,20 @@ class Decoder():
             byte = fp.read(1)
             while byte != b"":
                 temp = BitArray(byte).bin
+                # print(temp)
                 for i in range(len(temp)):
                     y[j] = int(temp[i])
                     j += 1
                 byte =  fp.read(1)
         
 
-            print(j)
+        y[y<0.5] = -1
         y = torch.from_numpy(y.reshape(1,128,S2,S3)).float()
-        print('dw: %s dh: %s S2: %s S3: %s'%(dw,dh,y.shape[2], y.shape[3]))
 
         output = self.model.dec(y)
         img = TF.to_pil_image(output.squeeze(0))
 
         width, height = img.size
         img = img.crop((dw,dh,width,height));
-        plt.imshow(img)
-        plt.show()
         img.save(out_path, "PNG")
         return y
