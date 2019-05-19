@@ -4,7 +4,7 @@ import torchvision.transforms.functional as TF
 import torch
 
 
-def display_(x):
+def display(x):
     if type(x) is tuple:
         img,out = x
         fig, axes = plt.subplots(ncols=1,nrows=2,figsize=(18,30))
@@ -28,5 +28,5 @@ def evaluate(model,ds,idx, showImages = False):
     score = (pytorch_msssim.msssim(x, y).item())
 #     print("MSSSIM score is {:.5f}".format(score))
     if showImages:
-        display_((iimg,oimg))
+        display((iimg,oimg))
     return score
