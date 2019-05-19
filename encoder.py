@@ -19,6 +19,6 @@ for i in f:
 
 encoder = Encoder(args.model)
 
-for i in tqdm(inputs):
+for i in inputs:
     print('converting %s...'%i)
     encoder.encode_and_save(os.path.join(args.image, i), os.path.join(args.out, '%scomp.xfr'%i[:-4]))
