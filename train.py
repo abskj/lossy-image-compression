@@ -30,7 +30,7 @@ args = parser.parse_args()
 model = Autoencoder().float()
 criterion = nn.SmoothL1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-exp_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[25,40,60], gamma=0.1)
+exp_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100,150,180], gamma=0.1)
 if torch.cuda.is_available():
     model = model.cuda()
 
@@ -47,8 +47,7 @@ if(args.checkpoint_path):
     history = checkpoint['history']
     START_EPOCH = history['epoch_data'][-1]+1
 
-
-
+    
 ds = Dataset(path=args.dataset_path)
 shuffle_dataset = True
 # Creating data indices for training and validation splits:
