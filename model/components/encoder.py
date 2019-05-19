@@ -4,7 +4,7 @@ import torchvision.transforms.functional as TF
 import numpy as np
 from PIL import Image
 from utils.data.bitstring import *
-
+import lzma
 class Encoder():
     def __init__(self, path):
         self.model = Autoencoder().float()
@@ -37,9 +37,11 @@ class Encoder():
         y = y.ravel()
         comp_y = BitArray(y)
         # print(comp_y.bin[:200])
-        with open(out_path , 'wb') as fp:
+        with lzma.open(out_path , 'wb', preset=9) as fp:
             fp.write(comp_dw.tobytes())
             fp.write(comp_dh.tobytes())
             fp.write(comp_S2.tobytes())
             fp.write(comp_S3.tobytes())
             fp.write(comp_y.tobytes())
+        # with ZipFile('%s.zip'%out_path,'w') as zip:
+        #     zip.write(out_path)

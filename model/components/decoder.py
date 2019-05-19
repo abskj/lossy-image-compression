@@ -7,6 +7,7 @@ from PIL import Image
 from utils.data.bitstring import *
 from utils import display
 import tqdm
+import lzma
 
 class Decoder():
     def __init__(self,path):
@@ -20,7 +21,7 @@ class Decoder():
         dw = dh = y = S2 = S3 = None
         
 
-        with open(in_path, 'rb') as fp:
+        with lzma.open(in_path, 'rb') as fp:
             dw = int.from_bytes(fp.read(1), byteorder='big', signed=False)
             dh = int.from_bytes(fp.read(1), byteorder='big', signed=False)
             S2 = int.from_bytes(fp.read(2), byteorder='big', signed=False)
