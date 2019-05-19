@@ -36,7 +36,7 @@ class Encoder():
 
         y = y.ravel()
         comp_y = BitArray(y)
-        print(comp_y.bin[:200])
+        # print(comp_y.bin[:200])
         with open(out_path , 'wb') as fp:
             fp.write(comp_dw.tobytes())
             fp.write(comp_dh.tobytes())
