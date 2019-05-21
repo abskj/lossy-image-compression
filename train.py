@@ -13,7 +13,7 @@ import sys
 import argparse
 parser = argparse.ArgumentParser()
 
-
+print('test1')
 warnings.filterwarnings('ignore')
 # Parameters for training
 batch_size = 1
