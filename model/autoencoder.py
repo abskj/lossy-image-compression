@@ -19,7 +19,7 @@ class autoencoder(nn.Module):
         self.dec = nn.Sequential(nn.ConvTranspose2d(128,64,6,stride=4, padding=1),
                                 nn.BatchNorm2d(64),
                                 nn.ReLU(),
-                                nn.ConvTranspose2d(64,32,8,stride=2, padding=2),
+                                nn.ConvTranspose2d(64,32,2,stride=2),
                                 nn.BatchNorm2d(32),
                                 nn.ReLU(),
                                 nn.ConvTranspose2d(32,3,8,stride=4,padding=2),
