@@ -10,16 +10,19 @@ class autoencoder(nn.Module):
                                 nn.Conv2d(32,64,2,stride=2),
                                 nn.ReLU(),
                                 nn.BatchNorm2d(64),
-    #                             nn.Conv2d(32,128,6,stride=4,padding=1),
-    #                             nn.ReLU(),
-    #                             nn.BatchNorm2d(128),
+                                nn.Conv2d(64,128,6,stride=4,padding=1),
+                                nn.ReLU(),
+                                nn.BatchNorm2d(128),
     #                             nn.Conv2d(128,128,3,stride=1,padding=1),
     #                             nn.Sigmoid()
                                 )
-        self.dec = nn.Sequential(nn.ConvTranspose2d(128,32,8,stride=4, padding=2),
+        self.dec = nn.Sequential(nn.ConvTranspose2d(128,64,6,stride=4, padding=1),
                                 nn.BatchNorm2d(32),
                                 nn.ReLU(),
-                                nn.ConvTranspose2d(32,3,2,2),
+                                nn.ConvTranspose2d(64,32,8,stride=2, padding=2),
+                                nn.BatchNorm2d(32),
+                                nn.ReLU(),
+                                nn.ConvTranspose2d(3,32,8,stride=4,padding=2),
                                 nn.BatchNorm2d(3),
                                 nn.ReLU(),
     #                             nn.ConvTranspose2d(64,32,2,2),
@@ -29,7 +32,7 @@ class autoencoder(nn.Module):
     #                             nn.ConvTranspose2d(32,3,2,2),
     #                             nn.Sigmoid()
                                 )
-        self.binarizer = Binarizer(64,128)
+        self.binarizer = Binarizer(128,128)
     def forward(self,x):
     
         x = self.enc(x)
