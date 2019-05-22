@@ -30,7 +30,7 @@ args = parser.parse_args()
 model = Autoencoder().float()
 criterion = nn.SmoothL1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-exp_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[35,45,55], gamma=0.1)
+exp_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[40,55,59], gamma=0.1)
 if torch.cuda.is_available():
     model = model.cuda()
 
