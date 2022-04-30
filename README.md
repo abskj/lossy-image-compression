@@ -1,10 +1,10 @@
 # Lossy Image Compression using Autoencoders
 
-This project demonstrates that we can use deep learning to compress images to very low bitrates and yet retain high qualities.This project was done as part of academic project for B.Tech degree by Abhishek Jha, Avik Banik, Soumitra Maity and Md. Akram Zaki of Kalyani Government Engineering College. This contains two already trained autoencoder and decoder model which you can train yourself if you would like. Currently it works only on PNG images.
+This project demonstrates that we can use deep learning to compress images to very low bitrates and yet retain high qualities.This project was done as part of academic project for B.Tech degree by Abhishek Jha, Avik Banik, Soumitra Maity and Md. Akram Zaki of Kalyani Government Engineering College. This contains two already trained autoencoder and decoder model which we trained on kaggle. Currently it works only on PNG images.
 
 ## Installation
 
-After cloning the git repo. Use the package manager [conda](https://www.anaconda.com/distribution/) to install the required dependencies for the.
+After cloning the git repo. Use the package manager [conda](https://www.anaconda.com/distribution/) to install the required dependencies.
 
 ```bash
 conda env create -f environment.yml
@@ -92,6 +92,7 @@ python test.py
 Please make sure to keep original images in `dataset` folder and decompressed images in `out/decompressed` before running test.py. Or keep some images in `dataset` and run `encode.py` followed by `decode.py` with no parameters.
 
 ## Contribution
-You are welcome to improve the project by adding or improving features. Just create the issue or pull request and I will get in touch. 
+Contributions are welcome.
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
